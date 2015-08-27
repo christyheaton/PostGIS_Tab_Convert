@@ -23,8 +23,8 @@ for database in databases:
 
     # go through every table in the list and turn it into a vector layer
     for table in tableList:
-        print "Conection to " + database + ": " + table + " established."
         uri.setDataSource("public", table, "way")
+        print "Conection to " + database + ": " + table + " established."
         vlayer = QgsVectorLayer(uri.uri(), table, "postgres")
 
         # get row and column counts and print
