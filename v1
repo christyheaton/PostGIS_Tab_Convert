@@ -1,0 +1,47 @@
+'''
+This script turns all of the tables in a list of postgis databases into tab files.
+It must be run in the QGIS environment. Tested in QGIS 2.8.1.
+This script converts without considering size or breaking up files in to smaller chunks.
+'''
+
+# create databases list and table list
+databases = ["SV", "GT", "NI", "PA", "CR", "KR", "CL", "MX", "AR"]
+#databases = ["AQ", "AR", "BR", "CA", "CL", "CR", "CU", "DE", "ES", "GB", "GT", "JP", "KR", "MX", "NG", "NI", "PA", "RU", "SV"]
+print "Databases:", databases
+tableList = ["planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads"]
+print "Table list:", tableList
+
+# create other variables
+server = "nico6"
+encoding = "utf-8"
+outputBase = "W:/SGSI/SpectrumBaseMaps/OSM/OutputTest/"
+
+# connect to nico6
+uri = QgsDataSourceURI()
+for database in databases:
+    uri.setConnection(server, "5432", database, "geouser", "geouser")
+    print "Connection to " + server + " " + database + " established."
+
+    # go through every table in the list and turn it into a vector layer
+    for table in tableList:
+        print "Conection to " + database + ": " + table + " established."
+        uri.setDataSource("public", table, "way")
+        vlayer = QgsVectorLayer(uri.uri(), table, "postgres")
+
+        # get row and column counts and print
+        fields = vlayer.pendingFields()
+        numFields = len(fields)
+        rows = vlayer.featureCount() 
+        print database + ": " + table + " has " + str(rows) + " rows and " + str(numFields) + " columns."
+
+        # turn points into SHP and everything else into TAB.
+        if table == "planet_osm_point":
+            output = outputBase + database + "/" + table + ".shp"
+            QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, None, "ESRI Shapefile")
+            print "Translation of " + database + ": " + table + ".shp successful."
+        else:
+            output = outputBase + database + "/" + table + ".tab"
+            QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, None, "MapInfo File")
+            print "Translation of " + database + ": " + table + ".tab successful."
+
+print "Process complete."
