@@ -12,14 +12,14 @@ tableList = ["planet_osm_line", "planet_osm_point", "planet_osm_polygon", "plane
 print "Table list:", tableList
 
 # create other variables
-server = "nico6"
+server = "myServer"
 encoding = "utf-8"
-outputBase = "W:/SGSI/SpectrumBaseMaps/OSM/OutputTest/"
+outputBase = "C:/Temp/"
 
 # connect to nico6
 uri = QgsDataSourceURI()
 for database in databases:
-    uri.setConnection(server, "5432", database, "geouser", "geouser")
+    uri.setConnection(server, "5432", database, "username", "password")
     print "Connection to " + server + " " + database + " established."
 
     # go through every table in the list and turn it into a vector layer
