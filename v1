@@ -5,8 +5,7 @@ This script converts without considering size or breaking up files in to smaller
 '''
 
 # create databases list and table list
-databases = ["SV", "GT", "NI", "PA", "CR", "KR", "CL", "MX", "AR"]
-#databases = ["AQ", "AR", "BR", "CA", "CL", "CR", "CU", "DE", "ES", "GB", "GT", "JP", "KR", "MX", "NG", "NI", "PA", "RU", "SV"]
+databases = ["AQ", "AR", "BR", "CA", "CL", "CR", "CU", "DE", "ES", "GB", "GT", "JP", "KR", "MX", "NG", "NI", "PA", "RU", "SV"]
 print "Databases:", databases
 tableList = ["planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads"]
 print "Table list:", tableList
