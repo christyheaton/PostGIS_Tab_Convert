@@ -15,7 +15,7 @@ server = "myServer"
 encoding = "utf-8"
 outputBase = "C:/Temp/"
 
-# connect to nico6
+# connect to server
 uri = QgsDataSourceURI()
 for database in databases:
     uri.setConnection(server, "5432", database, "username", "password")
