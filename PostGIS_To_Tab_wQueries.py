@@ -87,7 +87,7 @@ for database in databases:
             states = ["States", r"""("boundary" != '' and "admin_level"='4') or ("place" like '%state%' or "place" like '%province%')"""]
             counties = ["Counties", r""""boundary" <> '' and ("admin_level" = '6' or "place" = 'county')"""]
             urbanAreas = ["UrbanAreas", r"""("boundary" != '' and ("admin_level"='7' or "admin_level" = '8')) or ("place" like '%city%' or "place" like '%municipality%')"""]
-            water = ["Water", r""""natural" like '%bay%' or  "natural" like '%water%' or  "landuse" = '%reservoir%'"""]
+            water = ["Water", r""""natural" like '%bay%' or  "natural" like '%water%' or  "landuse" = 'reservoir'"""]
             majorParks = ["MajorParks", r""""boundary" in ('national_park')"""]
             landuse = ["Landuse", r""""landuse" in ('forest','recreation_ground','railway','military') or "boundary" = 'protected_area' or "military" <> '' or "railway" = 'station' or "leisure" = 'park'"""]
             airports = ["Airports", r""""aeroway"<>''"""]
