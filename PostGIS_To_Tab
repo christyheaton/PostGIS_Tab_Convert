@@ -13,6 +13,7 @@ print "Table list:", tableList
 # create other variables
 server = "myServer"
 encoding = "utf-8"
+coordsys = QgsCoordinateReferenceSystem(3395, QgsCoordinateReferenceSystem.EpsgCrsId)
 outputBase = "C:/Temp/"
 
 # connect to server
@@ -33,14 +34,9 @@ for database in databases:
         rows = vlayer.featureCount() 
         print database + ": " + table + " has " + str(rows) + " rows and " + str(numFields) + " columns."
 
-        # turn points into SHP and everything else into TAB.
-        if table == "planet_osm_point":
-            output = outputBase + database + "/" + table + ".shp"
-            QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, None, "ESRI Shapefile")
-            print "Translation of " + database + ": " + table + ".shp successful."
-        else:
-            output = outputBase + database + "/" + table + ".tab"
-            QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, None, "MapInfo File")
-            print "Translation of " + database + ": " + table + ".tab successful."
+        # turn into TAB.
+        output = outputBase + database + "/" + table + ".tab"
+        QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, coordsys, "MapInfo File")
+        print "Translation of " + database + ": " + table + ".tab successful."
 
 print "Process complete."
