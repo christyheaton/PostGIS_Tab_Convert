@@ -45,7 +45,7 @@ class TabExportUtility :
                     request = QgsFeatureRequest()
                     request.setFilterExpression(railway[1])
 
-                    rails = QgsVectorLayer("LineString?crs=epsg:3395", "rails", "memory")
+                    rails = QgsVectorLayer("LineString?crs=epsg:3857", "rails", "memory")
                     if not rails.isValid(): raise Exception("Failed to create memory layer")
                     pr = rails.dataProvider()
                     rails.startEditing()
@@ -97,7 +97,7 @@ class TabExportUtility :
                         request = QgsFeatureRequest()
                         request.setFilterExpression(point[1])
 
-                        cities = QgsVectorLayer("Point?crs=epsg:3395", point[1], "memory")
+                        cities = QgsVectorLayer("Point?crs=epsg:3857", point[1], "memory")
                         if not cities.isValid(): raise Exception("Failed to create memory layer")
                         pr = cities.dataProvider()
                         cities.startEditing()
@@ -148,7 +148,7 @@ class TabExportUtility :
                         request = QgsFeatureRequest()
                         request.setFilterExpression(polygon[1])
 
-                        polys = QgsVectorLayer("Polygon?crs=epsg:3395", point[1], "memory")
+                        polys = QgsVectorLayer("Polygon?crs=epsg:3857", point[1], "memory")
                         if not polys.isValid(): raise Exception("Failed to create memory layer")
                         pr = polys.dataProvider()
                         polys.startEditing()
@@ -314,7 +314,7 @@ class TabExportUtility :
                         request = QgsFeatureRequest()
                         request.setFilterExpression(road[1])
 
-                        road_mem = QgsVectorLayer("LineString?crs=epsg:3395", point[1], "memory")
+                        road_mem = QgsVectorLayer("LineString?crs=epsg:3857", point[1], "memory")
                         if not road_mem.isValid(): raise Exception("Failed to create memory layer")
                         pr = road_mem.dataProvider()
                         road_mem.startEditing()
