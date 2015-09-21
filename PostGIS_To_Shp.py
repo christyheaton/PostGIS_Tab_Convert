@@ -36,7 +36,7 @@ for database in databases:
 
         # turn into TAB.
         output = outputBase + database + "/" + table + ".tab"
-        QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, coordsys, "MapInfo File")
+        QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, coordsys, "ESRI Shapefile")
         print "Translation of " + database + ": " + table + ".tab successful."
 
 print "Process complete."
