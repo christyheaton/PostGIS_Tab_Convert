@@ -1,5 +1,5 @@
 '''
-This script turns all of the tables in a list of postgis databases into MapInfo Tab files based on a query.
+This script turns all of the tables in a list of postgis databases into shapefiles based on a query.
 It must be run in the QGIS environment. Tested in QGIS 2.8.1.
 '''
 
@@ -137,11 +137,11 @@ for database in databases:
                     selectedRows.append(feature.id())
                 vlayer.setSelectedFeatures(selectedRows)
 
-                #turn tables into tab files
-                output = outputBase + "/" + road[0] + "_" + database + ".tab"
-                # export selection as TAB
-                QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, coordsys, "MapInfo File", True)
-                print "Translation of " + road[0] + "_" + database + ".tab successful."
+                #turn tables into shapefiles
+                output = outputBase + "/" + road[0] + "_" + database + ".shp"
+                # export selection as shapefile
+                QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, coordsys, "ESRI Shapefile", True)
+                print "Translation of " + road[0] + "_" + database + ".shp successful."
 
         else:
             print "Bad table name."
