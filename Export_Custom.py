@@ -2,6 +2,7 @@
 This script automates and customizes the export of OSM planet data in PostGIS databases into shp files.
 It must be run in the QGIS environment. Tested in QGIS 2.8.1.
 You need to have existing folders in your output directory with the same names as in the database list.
+You must also have a server containing PostGIS databases (by country) with point, line, polygon, and road tables. 
 '''
 import os
 from time import strftime
