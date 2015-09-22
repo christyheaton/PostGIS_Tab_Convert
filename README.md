@@ -1,4 +1,4 @@
-# Automate OSM Data Export from PostGIS Databases
+# Automate and customize OSM Data Export from PostGIS Databases
 Converts PostGIS tables into shapefiles.
 
 ## Overview
