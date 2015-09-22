@@ -10,7 +10,7 @@ This script was created in order to break down [OpenStreetMap] (https://www.open
 
 ### Preconditions
 
-- Download individual country OSM data from [Gisgraphy] (http://download.gisgraphy.com/openstreetmap/pbf/). You will need to put the data into PostGIS databases by country containing the point, line, polygon, and road data. 
+- Download individual country OSM data from [Gisgraphy] (http://download.gisgraphy.com/openstreetmap/pbf/). You will need to put the data into PostGIS databases by country containing the point, line, polygon, and road tables. 
 
 - The script will need to be modified to point to your server, with its own username and password.
 
