@@ -52,7 +52,7 @@ The script must be run in the QGIS Environment. To run, open the Python console 
 
 ## Limitations
 
-This script was origianlly intended to export MapInfo Tab files. However, the script that does the conversion outputs an early version of Tab file and does not get projected correctly. Now the conversion it to Esri Shapefile and later converted to Mapinfo Tab using a modern conversion tool.
+This script was originally intended to export MapInfo Tab files. However, the script that does the conversion outputs an early version of Tab file and does not get projected correctly. The workaround is to convert to Esri Shapefile, then later conver to Mapinfo Tab using a modern conversion tool (FME/MapInfo Universal Translator).
 
 
 
