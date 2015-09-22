@@ -18,7 +18,7 @@ uri.setConnection(server, "5432", database, "username", "password")
 
 2. You will need [QGIS Desktop] (https://www.qgis.org/en/site/forusers/download.html) (this was tested using version 2.8.1).
 
-3. You will need to set up output folders in your output directory. You can use the MakeFolders.bat file to create your folders. Just put it in your output directory and double click the file to run.
+3. You will need to set up output folders in your output directory. You can use the [MakeFolders.bat] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/MakeFolders.bat) file to create your folders. Just put it in your output directory and double click the file to run.
 
 ### Customize
 
