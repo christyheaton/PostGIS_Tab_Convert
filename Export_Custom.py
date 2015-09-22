@@ -1,20 +1,23 @@
 '''
-This script turns all of the tables in a list of postgis databases into shp files based on a query.
+This script automates and customizes the export of OSM planet data in PostGIS databases into shp files.
 It must be run in the QGIS environment. Tested in QGIS 2.8.1.
 '''
 import os
 from time import strftime
 from PyQt4.QtCore import QVariant
+# define output directory
 outputBase = r"C:/Temp/"
 if not os.path.exists(outputBase):
     print "Invalid directory"
 logfile = open(outputBase + "logfile.txt", "a+")
 
 def logMessage():
+    '''Prints a message to the QGIS python window and logs in a file.'''
     print strftime("%Y-%m-%d %H:%M:%S") + " " + message
     logfile.write(strftime("%Y-%m-%d %H:%M:%S") + " " + message)
 
 def printCounts(layer, name):
+    '''Finds the row and column counts of the current table and prints and logs the counts.'''
     fields = layer.pendingFields()
     num_fields = len(fields)
     num_rows = layer.featureCount()
@@ -23,13 +26,15 @@ def printCounts(layer, name):
     logfile.write(strftime("%Y-%m-%d %H:%M:%S") + " " + message)
 
 def writeFile():
-    QgsVectorFileWriter.writeAsVectorFormat(mapLayer, output, encoding, coordsys, "MapInfo File", False)
+    '''Writes the memory layer to a Shapefile and prints and logs a completion message when done.'''
+    QgsVectorFileWriter.writeAsVectorFormat(mapLayer, output, encoding, coordsys, "ESRI Shapefile")
     message = "Translation of " + name + ".tab successful.\n"
     print strftime("%Y-%m-%d %H:%M:%S") + " " + message
     logfile.write(strftime("%Y-%m-%d %H:%M:%S") + " " + message)
 
 def getSize():
-    dataFile = outputBase + name + ".dat"
+    '''Gets the size of the data file and prints and logs this info.'''
+    dataFile = outputBase + name + ".dbf"
     message = name + ".dat" + " size: " + str(float(os.path.getsize(dataFile))/1024) + " KB.\n"
     print strftime("%Y-%m-%d %H:%M:%S") + " " + message
     logfile.write(strftime("%Y-%m-%d %H:%M:%S") + " " + message)
@@ -40,32 +45,34 @@ logMessage()
 message = "Output will go in individual country folders in " + outputBase + "\n"
 logMessage()
 
-# create databases list and table list
+# create databases list. To run just El Salvador, for example, change to ["SV"]
 databases = ["AQ", "AR", "BR", "CA", "CL", "CR", "CU", "DE", "ES", "GB", "GT", "JP", "KR", "MX", "NG", "NI", "PA", "RU", "SV"]
 
 message = "Databases:" + str(databases) + "\n"
 logMessage()
 
-# tables - the same for all databases
+# create list of table names - this is the same for all databases
 tableList = ["planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads"]
 
 message = "Table list:" + str(tableList) + "\n"
 logMessage()
 
-# create other variables
+# set up server, encoding, and coordinate system
 server = "myServer"
 encoding = "utf-8"
 coordsys = QgsCoordinateReferenceSystem(3395, QgsCoordinateReferenceSystem.EpsgCrsId)
 
-# connect to nico6
+# connect to server
 uri = QgsDataSourceURI()
+
 for database in databases:
+    # connect to current database
     uri.setConnection(server, "5432", database, "username", "password")
     
     message = "Connection to " + server + " " + database + " established.\n"
     logMessage()
 
-    # go through every table in the list and turn it into a vector layer
+    # go through every table in the list and turn it into a QGISVectorLayer
     for table in tableList:
         message = "Connection to " + database + ": " + table + " established.\n"
         logMessage()
@@ -75,6 +82,7 @@ for database in databases:
         if table == "planet_osm_line":
             printCounts(vlayer, table)
 
+            # change this to customize your selection [name, query]
             railway = ["Railway", r""""railway" != ''"""]
             request = QgsFeatureRequest()
             request.setFilterExpression(railway[1])
@@ -111,25 +119,26 @@ for database in databases:
         elif table == "planet_osm_point":
             printCounts(vlayer, table)
 
-            cities1 = ["Cities1", r"""place = 'city'"""]
-            cities2 = ["Cities2", r"""place = 'suburb'"""]
-            cities3 = ["Cities3", r"""place = 'town'"""]
-            cities4 = ["Cities4", r"""place = 'village'"""]
-            cities6 = ["Cities6", r"""place = 'neighborhood'"""]
-            cities8 = ["Cities8", r"""place in ('locality','hamlet')"""]
+            # change this to customize your selection [name, query]
+            city = ["Cities_City", r"""place = 'city'"""]
+            suburb = ["Cities_Suburb", r"""place = 'suburb'"""]
+            town = ["Cities_Town", r"""place = 'town'"""]
+            village = ["Cities_Village", r"""place = 'village'"""]
+            neighborhood = ["Cities_Neighborhood", r"""place = 'neighborhood'"""]
+            locality = ["Cities_Locality", r"""place in ('locality','hamlet')"""]
             stateLabels = ["StateLabels", r"""place in ('state','province')"""]
             
-            points = [cities1, cities2, cities3, cities4, cities6, cities8, stateLabels]
+            points = [city, suburb, town, village, neighborhood, locality, stateLabels]
 
             for point in points:
                 request = QgsFeatureRequest()
                 request.setFilterExpression(point[1])
-                        
+                # create a point memory layer using epsg 3857, select just rows that fit the query in point[1]        
                 cities = QgsVectorLayer("Point?crs=epsg:3857", point[1], "memory")
                 if not cities.isValid(): raise Exception("Failed to create memory layer")
                 pr = cities.dataProvider()
                 cities.startEditing()
-                #all points have the same columns
+                # create columns in the memory layer, all point tables will have the same columns (no interior loop needed)
                 pr.addAttributes([QgsField("admin_level", QVariant.String),QgsField("capital", QVariant.String),QgsField("name", QVariant.String),QgsField("place", QVariant.String),QgsField("population", QVariant.String)])
 
                 selectedRows = []
@@ -138,7 +147,7 @@ for database in databases:
                     selectedRows.append(feature.id())
                     newFeature = QgsFeature()
                     newFeature.setGeometry(feature.geometry())
-                    #all points have the same columns
+                    # populate the memory layer with matching fields from from the table
                     newFeature.setAttributes([feature.attribute("admin_level"),feature.attribute("capital"),feature.attribute("name"),feature.attribute("place"),feature.attribute("population")])
                     pr.addFeatures([newFeature])
 
@@ -148,16 +157,17 @@ for database in databases:
                 cities.setSelectedFeatures(selectedRows)
                 mapLayer = QgsMapLayerRegistry.instance().addMapLayer(cities)
 
-                #turn tables into tab files
+                # turn tables into shapefiles
                 name = database + "/" + point[0]
-                output = outputBase + name + ".tab"
-                printCounts(mapLayer, name + ".tab")
+                output = outputBase + name + ".shp"
+                printCounts(mapLayer, name + ".shp")
                 writeFile()
                 getSize()
 
         elif table == "planet_osm_polygon":
             printCounts(vlayer, table)
 
+            # change this to customize your selection [name, query]
             states = ["States", r"""("boundary" != '' and "admin_level"='4') or ("place" like '%state%' or "place" like '%province%')"""]
             counties = ["Counties", r""""boundary" <> '' and ("admin_level" = '6' or "place" = 'county')"""]
             urbanAreas = ["UrbanAreas", r"""("boundary" != '' and ("admin_level"='7' or "admin_level" = '8')) or ("place" like '%city%' or "place" like '%municipality%')"""]
@@ -172,12 +182,15 @@ for database in databases:
                 request = QgsFeatureRequest()
                 request.setFilterExpression(polygon[1])
 
+                # create a polygon memory layer using epsg 3857, select just rows that fit the query in polygon[1]
                 polys = QgsVectorLayer("Polygon?crs=epsg:3857", polygon[1], "memory")
                 if not polys.isValid(): raise Exception("Failed to create memory layer")
                 pr = polys.dataProvider()
                 polys.startEditing()
 
+                # polygon table contains a variety of themes and more customization of columns
                 if polygon == states or polygon == counties:
+                    # create columns in the memory layer, states and counties will have the same columns
                     pr.addAttributes([QgsField("admin_level",QVariant.String),QgsField("boundary",QVariant.String),QgsField("name",QVariant.String)])
                   
                     selectedRows = []
@@ -186,6 +199,7 @@ for database in databases:
                         selectedRows.append(feature.id())
                         newFeature = QgsFeature()
                         newFeature.setGeometry(feature.geometry())
+                        # populate the memory layer with matching fields from from the table
                         newFeature.setAttributes([feature.attribute("admin_level"),feature.attribute("boundary"),feature.attribute("name")])
                         pr.addFeatures([newFeature])
                     polys.commitChanges()
@@ -194,13 +208,14 @@ for database in databases:
                     polys.setSelectedFeatures(selectedRows)
                     mapLayer = QgsMapLayerRegistry.instance().addMapLayer(polys)
 
-                    #turn tables into tab files
+                    #turn tables into shapefiles
                     name = database + "/" + polygon[0]
-                    output = outputBase + name + ".tab"
-                    printCounts(mapLayer, name + ".tab")
+                    output = outputBase + name + ".shp"
+                    printCounts(mapLayer, name + ".shp")
                     writeFile()
 
                 elif polygon == urbanAreas:
+                    # create columns in the memory layer
                     pr.addAttributes([QgsField("admin_level",QVariant.String),QgsField("boundary",QVariant.String),QgsField("name",QVariant.String),QgsField("place",QVariant.String),QgsField("population",QVariant.String)])
                  
                     selectedRows = []
@@ -209,6 +224,7 @@ for database in databases:
                         selectedRows.append(feature.id())
                         newFeature = QgsFeature()
                         newFeature.setGeometry(feature.geometry())
+                        # populate the memory layer with matching fields from from the table
                         newFeature.setAttributes([feature.attribute("admin_level"),feature.attribute("boundary"),feature.attribute("name"),feature.attribute("place"),feature.attribute("population")])
                         pr.addFeatures([newFeature])
                     polys.commitChanges()
@@ -217,14 +233,15 @@ for database in databases:
                     polys.setSelectedFeatures(selectedRows)
                     mapLayer = QgsMapLayerRegistry.instance().addMapLayer(polys)
 
-                    #turn tables into tab files
+                    #turn tables into shapefiles
                     name = database + "/" + polygon[0]
-                    output = outputBase + name + ".tab"
-                    printCounts(mapLayer, name + ".tab")
+                    output = outputBase + name + ".shp"
+                    printCounts(mapLayer, name + ".shp")
                     writeFile()
                     getSize()
 
                 elif polygon == water:
+                    # create columns in the memory layer
                     pr.addAttributes([QgsField("landuse",QVariant.String),QgsField("natural",QVariant.String),QgsField("water",QVariant.String)])
                    
                     selectedRows = []
@@ -233,6 +250,7 @@ for database in databases:
                         selectedRows.append(feature.id())
                         newFeature = QgsFeature()
                         newFeature.setGeometry(feature.geometry())
+                        # populate the memory layer with matching fields from from the table
                         newFeature.setAttributes([feature.attribute("landuse"),feature.attribute("natural"),feature.attribute("water")])
                         pr.addFeatures([newFeature])
                     polys.commitChanges()
@@ -241,14 +259,15 @@ for database in databases:
                     polys.setSelectedFeatures(selectedRows)
                     mapLayer = QgsMapLayerRegistry.instance().addMapLayer(polys)
 
-                    #turn tables into tab files
+                    #turn tables into shapefiles
                     name = database + "/" + polygon[0]
-                    output = outputBase + name + ".tab"
-                    printCounts(mapLayer, name + ".tab")
+                    output = outputBase + name + ".shp"
+                    printCounts(mapLayer, name + ".shp")
                     writeFile()
                     getSize()
 
                 elif polygon == majorParks:
+                    # create columns in the memory layer
                     pr.addAttributes([QgsField("boundary",QVariant.String),QgsField("leisure",QVariant.String),QgsField("landuse",QVariant.String),QgsField("natural",QVariant.String),QgsField("water",QVariant.String),QgsField("place",QVariant.String)])
                    
                     selectedRows = []
@@ -257,6 +276,7 @@ for database in databases:
                         selectedRows.append(feature.id())
                         newFeature = QgsFeature()
                         newFeature.setGeometry(feature.geometry())
+                        # populate the memory layer with matching fields from from the table
                         newFeature.setAttributes([feature.attribute("boundary"),feature.attribute("leisure"),feature.attribute("landuse"),feature.attribute("natural"),feature.attribute("water"),feature.attribute("place")])
                         pr.addFeatures([newFeature])
                     polys.commitChanges()
@@ -265,14 +285,15 @@ for database in databases:
                     polys.setSelectedFeatures(selectedRows)
                     mapLayer = QgsMapLayerRegistry.instance().addMapLayer(polys)
 
-                    #turn tables into tab files
+                    #turn tables into shapefiles
                     name = database + "/" + polygon[0]
-                    output = outputBase + name + ".tab"
-                    printCounts(mapLayer, name + ".tab")
+                    output = outputBase + name + ".shp"
+                    printCounts(mapLayer, name + ".shp")
                     writeFile()
                     getSize()
 
                 elif polygon == landuse:
+                    # create columns in the memory layer
                     pr.addAttributes([QgsField("boundary",QVariant.String),QgsField("leisure",QVariant.String),QgsField("landuse",QVariant.String),QgsField("natural",QVariant.String),QgsField("water",QVariant.String),QgsField("place",QVariant.String),QgsField("military",QVariant.String)])
                  
                     selectedRows = []
@@ -281,6 +302,7 @@ for database in databases:
                         selectedRows.append(feature.id())
                         newFeature = QgsFeature()
                         newFeature.setGeometry(feature.geometry())
+                        # populate the memory layer with matching fields from from the table
                         newFeature.setAttributes([feature.attribute("boundary"),feature.attribute("leisure"),feature.attribute("landuse"),feature.attribute("natural"),feature.attribute("water"),feature.attribute("place"),feature.attribute("military")])
                         pr.addFeatures([newFeature])
                     polys.commitChanges()
@@ -289,14 +311,15 @@ for database in databases:
                     polys.setSelectedFeatures(selectedRows)
                     mapLayer = QgsMapLayerRegistry.instance().addMapLayer(polys)
 
-                    #turn tables into tab files
+                    #turn tables into shapefiles
                     name = database + "/" + polygon[0]
-                    output = outputBase + name + ".tab"
-                    printCounts(mapLayer, name + ".tab")
+                    output = outputBase + name + ".shp"
+                    printCounts(mapLayer, name + ".shp")
                     writeFile()
                     getSize()
 
                 elif polygon == airports:
+                    # create columns in the memory layer
                     pr.addAttributes([QgsField("boundary",QVariant.String),QgsField("leisure",QVariant.String),QgsField("landuse",QVariant.String),QgsField("natural",QVariant.String),QgsField("water",QVariant.String),QgsField("place",QVariant.String),QgsField("military",QVariant.String),QgsField("aeroway",QVariant.String)])
                 
                     selectedRows = []
@@ -305,6 +328,7 @@ for database in databases:
                         selectedRows.append(feature.id())
                         newFeature = QgsFeature()
                         newFeature.setGeometry(feature.geometry())
+                        # populate the memory layer with matching fields from from the table
                         newFeature.setAttributes([feature.attribute("boundary"),feature.attribute("leisure"),feature.attribute("landuse"),feature.attribute("natural"),feature.attribute("water"),feature.attribute("place"),feature.attribute("military"),feature.attribute("aeroway")])
                         pr.addFeatures([newFeature])
                     polys.commitChanges()
@@ -313,10 +337,10 @@ for database in databases:
                     polys.setSelectedFeatures(selectedRows)
                     mapLayer = QgsMapLayerRegistry.instance().addMapLayer(polys)
 
-                    #turn tables into tab files
+                    #turn tables into shapefiles
                     name = database + "/" + polygon[0]
-                    output = outputBase + name + ".tab"
-                    printCounts(mapLayer, name + ".tab")
+                    output = outputBase + name + ".shp"
+                    printCounts(mapLayer, name + ".shp")
                     writeFile()
                     getSize()
 
@@ -343,7 +367,7 @@ for database in databases:
                 if not road_mem.isValid(): raise Exception("Failed to create memory layer")
                 pr = road_mem.dataProvider()
                 road_mem.startEditing()
-                #all roads have the same columns
+                ## create columns in the memory layer. All roads will have the same columns. (no interior loop needed)
                 pr.addAttributes([QgsField("name", QVariant.String),QgsField("highway", QVariant.String),QgsField("ref", QVariant.String),QgsField("surface", QVariant.String)])
 
                 selectedRows = []
@@ -352,7 +376,7 @@ for database in databases:
                     selectedRows.append(feature.id())
                     newFeature = QgsFeature()
                     newFeature.setGeometry(feature.geometry())
-                    #all roads have the same columns
+                    # all roads have the same columns
                     newFeature.setAttributes([feature.attribute("name"),feature.attribute("highway"),feature.attribute("ref"),feature.attribute("surface")])
                     pr.addFeatures([newFeature])
 
@@ -363,8 +387,8 @@ for database in databases:
                 mapLayer = QgsMapLayerRegistry.instance().addMapLayer(road_mem)
 
                 name = database + "/" + road[0]
-                output = outputBase + name + ".tab"                
-                printCounts(mapLayer, name + ".tab")
+                output = outputBase + name + ".shp"                
+                printCounts(mapLayer, name + ".shp")
                 writeFile()
                 getSize()
 
