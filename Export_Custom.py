@@ -35,7 +35,8 @@ def writeFile():
 def getSize():
     '''Gets the size of the data file and prints and logs this info.'''
     dataFile = outputBase + name + ".dbf"
-    message = name + ".dat" + " size: " + str(float(os.path.getsize(dataFile))/1024) + " KB.\n"
+    sizeK = float(os.path.getsize(dataFile))/1024
+    message = name + ".dbf" + " size: " + str("%.2f" % sizeK) + " KB.\n"
     print strftime("%Y-%m-%d %H:%M:%S") + " " + message
     logfile.write(strftime("%Y-%m-%d %H:%M:%S") + " " + message)
 
@@ -362,7 +363,7 @@ for database in databases:
             for road in roads:                        
                 request = QgsFeatureRequest()
                 request.setFilterExpression(road[1])
-
+                # create a line memory layer using epsg 3857, select just rows that fit the query in road[1]
                 road_mem = QgsVectorLayer("LineString?crs=epsg:3857", point[1], "memory")
                 if not road_mem.isValid(): raise Exception("Failed to create memory layer")
                 pr = road_mem.dataProvider()
