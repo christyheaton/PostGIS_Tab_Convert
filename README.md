@@ -25,23 +25,24 @@ uri.setConnection(server, "5432", database, "username", "password")
 To customize rows, you must decide on a name for your output and a query QGIS can use to select it. For example, the point table contains all points in the planet file and I want to produce separate shapefiles representing Cities, Suburbs. Towns, etc. This can be customized for other needs.
 
 ```python
-        if table == "planet_osm_point":
-            printCounts(vlayer, table)
+city = ["Cities_City", r"""place = 'city'"""]
+suburb = ["Cities_Suburb", r"""place = 'suburb'"""]
+town = ["Cities_Town", r"""place = 'town'"""]
+village = ["Cities_Village", r"""place = 'village'"""]
+neighborhood = ["Cities_Neighborhood", r"""place = 'neighborhood'"""]
+locality = ["Cities_Locality", r"""place in ('locality','hamlet')"""]
+stateLabels = ["StateLabels", r"""place in ('state','province')"""]
 
-            cities1 = ["Cities_City", r"""place = 'city'"""]
-            cities2 = ["Cities_Suburb", r"""place = 'suburb'"""]
-            cities3 = ["Cities_Town", r"""place = 'town'"""]
-            cities4 = ["Cities_Village", r"""place = 'village'"""]
-            cities6 = ["Cities_Neighborhood", r"""place = 'neighborhood'"""]
-            cities8 = ["Cities_Locality", r"""place in ('locality','hamlet')"""]
-            stateLabels = ["StateLabels", r"""place in ('state','province')"""]
+points = [city, suburb, town, village, neighborhood, locality, stateLabels]
 ```
 
 To customize columns, the script creates a memory layer and builds just the columns explicitly requested. Then it populates them with the columns with the same name from the original table. Both these lines of code must contain the same custom columns.
 
 ```python
 pr.addAttributes([QgsField("osm_id", QVariant.Int),QgsField("admin_level", QVariant.String),QgsField("capital", QVariant.String),QgsField("name", QVariant.String),QgsField("place", QVariant.String),QgsField("population", QVariant.Int),QgsField("tags", QVariant.String)])
+```
 
+````python
 newFeature.setAttributes([feature.attribute("osm_id"),feature.attribute("admin_level"),feature.attribute("capital"),feature.attribute("name"),feature.attribute("place"),feature.attribute("population"), feature.attribute("tags")])
 ```
 
