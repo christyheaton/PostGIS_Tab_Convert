@@ -109,10 +109,10 @@ for database in databases:
             rails.setSelectedFeatures(selectedRows)
             mapLayer = QgsMapLayerRegistry.instance().addMapLayer(rails)
 
-            #turn tables into tab files
+            #turn tables into shapefiles
             name = database + "/" + railway[0]
-            output = outputBase + name + ".tab"
-            printCounts(mapLayer, name + ".tab")
+            output = outputBase + name + ".shp"
+            printCounts(mapLayer, name + ".shp")
             writeFile()
             getSize()
 
