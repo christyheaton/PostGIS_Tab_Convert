@@ -7,7 +7,7 @@ This script will automate and customize export of data from PostGIS databases in
 
 [Export_All.py] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/Export_All.py) is a simple script that loops through all of the country databases and exports the data in "planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads" into shapefiles without customization. Warning: this may produce extremely large files.
 
-[Export_Custom.py] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/Export_Custom.py) is more complex. It allows for only a set of rows and columns to be exported to the final shapefiles, saving a lot of space and producing an output that only contains what you want. In testing this produced much smaller and more workable files.
+[Export_Custom.py] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/Export_Custom.py) is more complex. It allows for a subset of rows and columns to be exported to the final shapefiles, saving a space and producing an output that only contains the data you need. In testing this produced much smaller and more workable files.
 
 To customize rows, you must decide a name for your output and a query QGIS should use select it. For example, the point table contains all points in the planet file and I want to produce separate shapefiles representing Cities, Suburbs. Towns, etc. This can be customized for other needs.
 
