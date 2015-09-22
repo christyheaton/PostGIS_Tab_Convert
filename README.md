@@ -1,6 +1,6 @@
 ## Overview
 
-This script will automate and customize export of data from PostGIS databases into shapefiles. These scripts were made for a specific project, and it is customized for that project. However, someone familiar with Python could easily modify queries and row/column names to suit their needs.
+This script will automate and customize export of data from PostGIS databases into shapefiles.
 
 [Export_All.py] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/Export_All.py) is a simple script that loops through all of the country databases and exports the data in "planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads" into shapefiles without customization. Warning: this may produce extremely large files.
 
@@ -9,8 +9,6 @@ This script will automate and customize export of data from PostGIS databases in
 ## Usage
 
 You will need to have an existing set of PostGIS databases by country containing point, line, polygon, and road data from the OSM Planet file. 
-
-
 
 You will also need [QGIS Desktop] (https://www.qgis.org/en/site/forusers/download.html) (this was tested using version 2.8.1).
 
