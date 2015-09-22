@@ -1,6 +1,7 @@
 '''
 This script automates and customizes the export of OSM planet data in PostGIS databases into shp files.
 It must be run in the QGIS environment. Tested in QGIS 2.8.1.
+You need to have existing folders in your output directory with the same names as in the database list.
 '''
 import os
 from time import strftime
@@ -47,6 +48,7 @@ message = "Output will go in individual country folders in " + outputBase + "\n"
 logMessage()
 
 # create databases list. To run just El Salvador, for example, change to ["SV"]
+# you must have folders with these names set up in your output directory
 databases = ["AQ", "AR", "BR", "CA", "CL", "CR", "CU", "DE", "ES", "GB", "GT", "JP", "KR", "MX", "NG", "NI", "PA", "RU", "SV"]
 
 message = "Databases:" + str(databases) + "\n"
