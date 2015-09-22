@@ -8,9 +8,17 @@ This script will automate and customize export of data from PostGIS databases in
 
 ## Usage
 
-You will need to have an existing set of PostGIS databases by country containing point, line, polygon, and road data from the OSM Planet file. 
+### Preconditions
 
-You will also need [QGIS Desktop] (https://www.qgis.org/en/site/forusers/download.html) (this was tested using version 2.8.1).
+1. You will need to have an existing set of PostGIS databases by country containing point, line, polygon, and road data from the OSM Planet file. The script will need to be modified to point to your server, with its own username and password.
+```python
+server = "MyServer"
+uri.setConnection(server, "5432", database, "username", "password")
+```
+
+2. You will need [QGIS Desktop] (https://www.qgis.org/en/site/forusers/download.html) (this was tested using version 2.8.1).
+
+3. You will need to set up output folders in your output directory
 
 To customize rows, you must decide a name for your output and a query QGIS should use select it. For example, the point table contains all points in the planet file and I want to produce separate shapefiles representing Cities, Suburbs. Towns, etc. This can be customized for other needs.
 
