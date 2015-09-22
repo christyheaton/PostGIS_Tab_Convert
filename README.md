@@ -1,11 +1,11 @@
-# Automate OSM Data Export from a PostGIS Database
-Converts PostGIS tables into MapInfo Tab files.
+# Automate OSM Data Export from PostGIS Databases
+Converts PostGIS tables into shapefiles.
 
 ## Overview
 
 This script will automate and customize export of data from PostGIS databases into shapefiles.
 
-PostGIS_To_Shp.py is a simple script that loops through all of the country databases and exports the data in "planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads" into shapefiles without customizeation. Warning: this may produce extremely large files.
+PostGIS_To_Shp.py is a simple script that loops through all of the country databases and exports the data in "planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads" into shapefiles without customization. Warning: this may produce extremely large files.
 
 
 
