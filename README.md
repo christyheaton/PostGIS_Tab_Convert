@@ -5,9 +5,9 @@ Converts PostGIS tables into shapefiles.
 
 This script will automate and customize export of data from PostGIS databases into shapefiles.
 
-PostGIS_To_Shp.py is a simple script that loops through all of the country databases and exports the data in "planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads" into shapefiles without customization. Warning: this may produce extremely large files.
+[Export_All.py] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/Export_All.py) is a simple script that loops through all of the country databases and exports the data in "planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads" into shapefiles without customization. Warning: this may produce extremely large files.
 
-
+[Export_Custom.py] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/Export_Custom.py) is more complex. It allows for only a set of rows and columns to be exported to the final shapefiles, saving a lot of space and producing an output that only contains what you want. In testing this produced much smaller and more workable files.
 
 These scripts were made for a specific project, and it is customized for that project. However, someone familiar with Python could easily modify queries and row/column names to suit their needs.
 
