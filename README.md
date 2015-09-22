@@ -1,6 +1,6 @@
 ## Overview
 
-This script was created in order to break down [OpenStreetMap] (https://www.openstreetmap.org/) planet point, line, and polygon data into small shapefiles by theme (counties, parks, expressways, etc).
+This script was created in order to break down [OpenStreetMap] (https://www.openstreetmap.org/) point, line, and polygon data into small shapefiles by theme (counties, parks, expressways, etc). Once individual PostGIS databases are set up to hold the original data by country, this script will automate and customize the export process.
 
 [Export_All.py] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/Export_All.py) is a simple script that loops through all of the country databases and exports the data in "planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads" into shapefiles without customization. Warning: this may produce extremely large files.
 
