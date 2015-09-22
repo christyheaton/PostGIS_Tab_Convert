@@ -11,6 +11,7 @@ This script will automate and customize data export from PostGIS databases into 
 ### Preconditions
 
 1. You will need to have an existing set of PostGIS databases by country containing point, line, polygon, and road data from the OSM Planet file. The script will need to be modified to point to your server, with its own username and password.
+
 ```python
 server = "MyServer"
 uri.setConnection(server, "5432", database, "username", "password")
