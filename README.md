@@ -3,7 +3,7 @@ Converts PostGIS tables into shapefiles.
 
 ## Overview
 
-This script will automate and customize export of data from PostGIS databases into shapefiles.
+This script will automate and customize export of data from PostGIS databases into shapefiles. These scripts were made for a specific project, and it is customized for that project. However, someone familiar with Python could easily modify queries and row/column names to suit their needs.
 
 [Export_All.py] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/Export_All.py) is a simple script that loops through all of the country databases and exports the data in "planet_osm_line", "planet_osm_point", "planet_osm_polygon", "planet_osm_roads" into shapefiles without customization. Warning: this may produce extremely large files.
 
@@ -31,8 +31,6 @@ pr.addAttributes([QgsField("osm_id", QVariant.Int),QgsField("admin_level", QVari
 
 newFeature.setAttributes([feature.attribute("osm_id"),feature.attribute("admin_level"),feature.attribute("capital"),feature.attribute("name"),feature.attribute("place"),feature.attribute("population"), feature.attribute("tags")])
 ```
-
-These scripts were made for a specific project, and it is customized for that project. However, someone familiar with Python could easily modify queries and row/column names to suit their needs.
 
 ## Usage
 
