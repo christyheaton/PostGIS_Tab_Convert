@@ -40,7 +40,7 @@ newFeature.setAttributes([feature.attribute("osm_id"),feature.attribute("admin_l
 
 The script must be run in the QGIS Environment. To run, open the Python console in QGIS. Click the Editor button and then the Open button. Nagavate to the script and click Open. Now you can run the script within this console.
 
-This script was origianlly intended to export MapInfo Tab files. However, the script that does the conversion outputs an early version of Tab file and does not get projected correctly.
+This script was origianlly intended to export MapInfo Tab files. However, the script that does the conversion outputs an early version of Tab file and does not get projected correctly. Now the conversion it to Esri Shapefile and later converted to Mapinfo Tab using a modern conversion tool.
 
 
 
