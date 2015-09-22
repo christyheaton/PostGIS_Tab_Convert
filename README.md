@@ -10,16 +10,18 @@ This script will automate and customize data export from PostGIS databases into 
 
 ### Preconditions
 
-1. You will need to have an existing set of PostGIS databases by country containing point, line, polygon, and road data from the OSM Planet file. The script will need to be modified to point to your server, with its own username and password.
+- Download individual country OSM data from [Gisgraphy] (http://download.gisgraphy.com/openstreetmap/pbf/). You will need to put the data into PostGIS databases by country containing the point, line, polygon, and road data. 
+
+- The script will need to be modified to point to your server, with its own username and password.
 
 ```python
 server = "MyServer"
 uri.setConnection(server, "5432", database, "username", "password")
 ```
 
-2. You will need [QGIS Desktop] (https://www.qgis.org/en/site/forusers/download.html) (this was tested using version 2.8.1).
+- [QGIS Desktop] (https://www.qgis.org/en/site/forusers/download.html) (this was tested using version 2.8.1).
 
-3. You will need to set up output folders in your output directory. You can use the [MakeFolders.bat] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/MakeFolders.bat) file to create your folders. Just put it in your output directory and double click the file to run.
+- You will need to set up output folders in your output directory. You can use the [MakeFolders.bat] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/MakeFolders.bat) file to create your folders. Just put it in your output directory and double click the file to run.
 
 ### Customize
 
