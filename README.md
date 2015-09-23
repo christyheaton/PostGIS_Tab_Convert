@@ -19,7 +19,7 @@ server = "MyServer"
 uri.setConnection(server, "5432", database, "username", "password")
 ```
 
-- [QGIS Desktop] (https://www.qgis.org/en/site/forusers/download.html) (this was tested using version 2.8.1).
+- You must have [QGIS Desktop] (https://www.qgis.org/en/site/forusers/download.html) installed (this was tested using version 2.8.1).
 
 - You will need to set up output folders in your output directory. You can use the [MakeFolders.bat] (https://github.com/christyheaton/PostGIS_Tab_Convert/blob/master/MakeFolders.bat) file to create your folders. Just put it in your output directory and double click the file to run.
 
@@ -39,7 +39,7 @@ stateLabels = ["StateLabels", r"""place in ('state','province')"""]
 points = [city, suburb, town, village, neighborhood, locality, stateLabels]
 ```
 
-To customize columns, the script creates a memory layer and builds just the columns explicitly requested. Then it populates them with the columns with the same name from the original table. Both these lines of code must contain the same custom columns.
+To customize columns, the script creates a memory layer and adds just the columns explicitly requested. Then it populates the columns with the data from the columns with the same name from the original table. Both of these lines of code must contain the same custom columns.
 
 ```python
 pr.addAttributes([QgsField("osm_id", QVariant.Int),QgsField("admin_level", QVariant.String),QgsField("capital", QVariant.String),QgsField("name", QVariant.String),QgsField("place", QVariant.String),QgsField("population", QVariant.Int),QgsField("tags", QVariant.String)])
