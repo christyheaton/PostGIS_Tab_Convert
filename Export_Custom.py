@@ -123,12 +123,12 @@ for database in databases:
                 line_mem.setSelectedFeatures(selectedRows)
                 mapLayer = QgsMapLayerRegistry.instance().addMapLayer(line_mem)
 
-            #turn tables into tab files
-            name = database + "/" + line[0]
-            output = outputBase + name + ".shp"
-            printCounts(mapLayer, name + ".shp")
-            writeFile()
-            getSize()
+                #turn tables into tab files
+                name = database + "/" + line[0]
+                output = outputBase + name + ".shp"
+                printCounts(mapLayer, name + ".shp")
+                writeFile()
+                getSize()
 
         elif table == "planet_osm_point":
             printCounts(vlayer, table)
@@ -185,7 +185,7 @@ for database in databases:
             states = ["States", r"""("boundary" != '' and "admin_level"='4') or ("place" like '%state%' or "place" like '%province%')"""]
             counties = ["Counties", r""""boundary" <> '' and ("admin_level" = '6' or "place" = 'county')"""]
             urbanAreas = ["UrbanAreas", r"""("boundary" != '' and ("admin_level"='7' or "admin_level" = '8')) or ("place" like '%city%' or "place" like '%municipality%')"""]
-            water = ["Water", r""""natural" like '%bay%' or  "natural" like '%water%' or  "landuse" = 'reservoir'"""]
+            water = ["Water", r"""water is not null or waterway = 'riverbank' or waterway = 'channel' or waterway = 'fishing_lake' or waterway = 'lake' or waterway = 'moat' or waterway = 'mill_pond' or waterway = 'pond' or waterway = 'reservoir' or waterway = 'river' or waterway = 'stream' or waterway = 'water' or waterway = 'waterfall' or waterway = 'yes' or 'waterway' = 'weir' or waterway = 'marina' or waterway = 'mooring' or "natural" like '%bay%' or  "natural" like '%water%' or  "landuse" = 'reservoir'"""]
             majorParks = ["MajorParks", r""""boundary" in ('national_park')"""]
             landuse = ["Landuse", r""""landuse" in ('forest','recreation_ground','railway','military') or "boundary" = 'protected_area' or "military" <> '' or "railway" = 'station' or "leisure" = 'park'"""]
             airports = ["Airports", r""""aeroway"<>''"""]
