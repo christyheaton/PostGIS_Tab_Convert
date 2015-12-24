@@ -1,10 +1,8 @@
 ![external image](https://raw.githubusercontent.com/maptime/maptime.github.io/master/img/xmaptime-logo-web-header-rainbonly.png.pagespeed.ic.sUvy41gYSf.png "External Image Example")
 
-## Community Edu in Open Geo
+## Data Disarray: Extracting and Making Sense of OSM Data
 
-[@MaptimeSEA](https://twitter.com/MaptimeSEA)
-
-[Christy Heaton](https://twitter.com/christytoes) & [Andrew Powers](https://twitter.com/p0wersa)
+[Christy Heaton](https://twitter.com/christytoes)
 
 Note: Christy
 Introduce selves. We're happy to be back at UW GIS Day again talking about community education using open source geospatial technology and this great group called maptime Seattle.
