@@ -37,6 +37,6 @@ for database in databases:
         # turn into shapefile.
         output = outputBase + database + "/" + table + ".shp"
         QgsVectorFileWriter.writeAsVectorFormat(vlayer, output, encoding, coordsys, "ESRI Shapefile")
-        print "Translation of " + database + ": " + table + ".tab successful."
+        print "Translation of " + database + ": " + table + ".shp successful."
 
 print "Process complete."
