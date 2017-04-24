@@ -1,6 +1,6 @@
 '''
 This script turns all of the tables in a list of postgis databases into shapefiles.
-It must be run in the QGIS environment. Tested in QGIS 2.8.1.
+It must be run in the QGIS environment (which uses Python version 2.7). Tested in QGIS 2.8.1.
 This script converts without considering size or breaking up files in to smaller chunks.
 '''
 
